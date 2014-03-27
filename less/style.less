@@ -1,0 +1,115 @@
+html, body {
+   font: 14px sans-serif;
+   height: 100%;
+}
+
+p {
+   margin-top: 30px;
+}
+
+body {
+   background: -webkit-repeating-linear-gradient(45deg, #f9f9f9, #f9f9f9 10px, #dfd 10px, #ccf 20px);  
+   background: repeating-linear-gradient(45deg, #f9f9f9, #f9f9f9 10px, #dfd 10px, #ccf 20px);  
+}
+
+.gradient(@from, @to) {
+   background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+   background-image: -webkit-linear-gradient(top, @from, @to);
+   background-image:    -moz-linear-gradient(top, @from, @to);
+   background-image:      -o-linear-gradient(top, @from, @to);
+   background-image:         linear-gradient(to bottom, @from, @to);
+}
+
+.rating-clip-star-mixin(@default-from, @default-to, @active-from, @active-to) {
+   &__star {
+      .gradient(@active-from, @active-to);
+   }
+   &_0 &__star,
+   &_1 &__star ~ &__star,
+   &_2 :nth-child(2) ~ &__star,
+   &_3 :nth-child(3) ~ &__star,
+   &_4 :nth-child(4) ~ &__star {
+      .gradient(@default-from, @default-to);
+   }
+
+   &:hover &__star {
+      .gradient(@active-from, @active-to);  
+   }
+   .rating-clip &__star:hover ~ &__star {
+      .gradient(@default-from, @default-to);
+   }
+}
+
+.rating-star-mixin(@name, @default-pos, @active-pos) {
+   .rating__star {
+      background-position: @active-pos;
+   }
+
+   &.rating_0 .rating__star,
+   &.rating_1 .rating__star ~ .rating__star,
+   &.rating_2 :nth-child(2) ~ .rating__star,
+   &.rating_3 :nth-child(3) ~ .rating__star,
+   &.rating_4 :nth-child(4) ~ .rating__star {
+      background-position: @default-pos;
+   }
+
+   &:hover .rating__star,
+   &.rating_0:hover .rating__star,
+   &.rating_1:hover .rating__star,
+   &.rating_2:hover .rating__star,
+   &.rating_3:hover .rating__star,
+   &.rating_4:hover .rating__star {
+      background-position: @active-pos;
+   }
+   .rating__star:hover ~ .rating__star {
+      background-position: @default-pos;
+   }
+}
+
+.rating-clip {
+   display: inline-block;
+   font-size: 16px;
+   white-space: nowrap;
+
+   &__star {
+      color: rgba(0, 0, 0, 0);
+      cursor: pointer;
+      padding: 0 1px;
+      margin-left: -.27em;
+
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      &:before {
+         content: '★';
+      }
+   }
+
+   .rating-clip-star-mixin(#ccc, #555, #fff033, #ff3300);
+
+   &_big {
+      font-size: 36px;
+   }
+}
+
+
+.rating {
+   display: inline-block;
+   
+   &__star {
+      background: url(../images/sprite.png) -2px 0 no-repeat;
+      cursor: pointer;
+      display: inline-block;
+      height: 16px;
+      margin-left: -0.25em;
+      padding: 0 1px;
+      width: 16px;
+   }
+
+   .rating-star-mixin('', -20px 0, -2px 0);
+
+   &_red {
+      .rating-star-mixin('', -20px 0, -38px 0);      
+   }
+
+}
